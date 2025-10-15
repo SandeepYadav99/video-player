@@ -5,17 +5,17 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 const Controls = ({ status, handlePlayPause, playNext, playPrev }) => (
   <View style={styles.skipRow}>
     <TouchableOpacity onPress={playPrev}>
-      <Ionicons name="play-skip-back" size={36} color="#fff" />
+      <Ionicons name="play-skip-back-outline" size={36} color="#fff" />
     </TouchableOpacity>
-    <TouchableOpacity onPress={handlePlayPause}>
+    {/* <TouchableOpacity onPress={handlePlayPause}>
       <Ionicons
         name={status.isPlaying ? "pause-circle" : "play-circle"}
         size={60}
         color="#1EB1FC"
       />
-    </TouchableOpacity>
+    </TouchableOpacity> */}
     <TouchableOpacity onPress={playNext}>
-      <Ionicons name="play-skip-forward" size={36} color="#fff" />
+      <Ionicons name="play-skip-forward-outline" size={36} color="#fff" />
     </TouchableOpacity>
   </View>
 );

@@ -165,6 +165,8 @@ export default function VideoPlayers() {
             toggleFullScreen={toggleFullScreen}
             isFullScreen={isFullScreen}
             formatTime={formatTime}
+             
+            handlePlayPause={handlePlayPause}
           />
         )}
       </View>

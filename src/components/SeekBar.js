@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -16,24 +16,22 @@ const SeekBar = ({
   toggleFullScreen,
   isFullScreen,
   formatTime,
+  handlePlayPause,
 }) => (
   <View style={styles.seekSection}>
     <View style={styles.timeRow}>
-      <View style={{ flexDirection: "row", width: "90%" }}>
-        <Text style={styles.timeText}>
-          {formatTime(isSeeking ? seekPosition : status.positionMillis || 0)} /{" "}
-          {formatTime(status.durationMillis || 0)}
-        </Text>
-        <View style={styles.volumeSection}>
-          <TouchableOpacity onPress={toggleVolumeSlider}>
-            <Ionicons
-              name={volume === 0 ? "volume-mute" : "volume-high"}
-              size={22}
-              color="#fff"
-              style={{ marginLeft: 10 }}
-            />
-          </TouchableOpacity>
-          {showVolumeSlider && (
+      <View style={styles.volumeSection}>
+        <TouchableOpacity onPress={toggleVolumeSlider}>
+          <Ionicons
+            name={volume === 0 ? "volume-mute" : "volume-high"}
+            size={22}
+            color="#1EB1FC"
+            style={{ marginLeft: 10 }}
+          />
+        </TouchableOpacity>
+
+        {showVolumeSlider && (
+          <View style={styles.volumeSliderContainer}>
             <Slider
               style={styles.volumeSlider}
               minimumValue={0}
@@ -43,36 +41,52 @@ const SeekBar = ({
               minimumTrackTintColor="#1EB1FC"
               maximumTrackTintColor="#444"
               thumbTintColor="#1EB1FC"
+              orientation="vertical" // For vertical slider
             />
-          )}
-        </View>
+          </View>
+        )}
       </View>
+
       <TouchableOpacity
         onPress={toggleFullScreen}
         style={styles.fullscreenButton}
       >
-        <Ionicons
-          name={isFullScreen ? "contract" : "expand"}
+        <AntDesign
+          name={isFullScreen ? "import" : "export"}
           size={22}
-          color="#fff"
+          color="#1EB1FC"
         />
       </TouchableOpacity>
     </View>
-    <Slider
-      style={styles.slider}
-      value={
-        isSeeking
-          ? seekPosition / status.durationMillis
-          : status.positionMillis / status.durationMillis || 0
-      }
-      minimumValue={0}
-      maximumValue={1}
-      onValueChange={onSeekSliderValueChange}
-      onSlidingComplete={onSeekSliderSlidingComplete}
-      minimumTrackTintColor="#1EB1FC"
-      maximumTrackTintColor="#444"
-      thumbTintColor="#1EB1FC"
-    />
+
+    <View style={styles.sliderContainer}>
+      <TouchableOpacity onPress={handlePlayPause}>
+        <Ionicons
+          name={status.isPlaying ? "pause-outline" : "play-outline"}
+          size={35}
+          color="#1EB1FC"
+        />
+      </TouchableOpacity>
+      <Slider
+        style={styles.slider}
+        value={
+          isSeeking
+            ? seekPosition / status.durationMillis
+            : status.positionMillis / status.durationMillis || 0
+        }
+        minimumValue={0}
+        maximumValue={1}
+        onValueChange={onSeekSliderValueChange}
+        onSlidingComplete={onSeekSliderSlidingComplete}
+        minimumTrackTintColor="#1EB1FC"
+        maximumTrackTintColor="#444"
+        thumbTintColor="#1EB1FC"
+      />
+    </View>
+    <Text style={styles.timeText}>
+      {formatTime(isSeeking ? seekPosition : status.positionMillis || 0)} /{" "}
+      {formatTime(status.durationMillis || 0)}
+    </Text>
   </View>
 );
 
@@ -85,7 +99,7 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
   slider: {
-    width: "100%",
+    width: "90%",
     height: 35,
   },
   title: {
@@ -96,21 +110,23 @@ const styles = StyleSheet.create({
   },
   timeRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
     paddingHorizontal: 10,
-    marginBottom: -6,
-    paddingVertical: 8,
+    gap: 16,
   },
   timeText: {
     color: "#fff",
     fontSize: 12,
     opacity: 0.8,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    padding: 4,
     borderRadius: 8,
+    textAlign: "right",
+    marginRight: 8,
+    fontWeight: "700",
   },
-  fullscreenButton: {},
+  fullscreenButton: {
+    transform: [{ rotate: "-90deg" }],
+  },
   volumeSlider: {
     width: 120,
   },
@@ -118,4 +134,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  sliderContainer: { flexDirection: "row", alignItems: "center" },
 });
